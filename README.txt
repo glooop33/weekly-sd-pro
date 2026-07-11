@@ -1,16 +1,6 @@
-Weekly SD Pro V1
-
-طريقة النشر على Netlify:
-1) فك ضغط ملف ZIP.
-2) ارفع المجلد كاملًا إلى Netlify Drop.
-3) استخدم الرابط الذي يظهر لك.
-4) افتحه من الجوال واختر "إضافة إلى الشاشة الرئيسية".
-
-المزايا:
-- واجهة عربية مناسبة للجوال.
-- 38 رمزًا جاهزًا.
-- اليومي والأسبوعي والشهري مستقلة.
-- المفضلة.
-- إضافة وحذف الرموز.
-- إنشاء صورة جاهزة للنشر.
-- بدون تواريخ.
+Weekly SD Pro V1.1
+- Mobile-first Arabic interface.
+- Quick Update screen.
+- Daily / Weekly / Monthly independent.
+- Favorites and all-symbol update modes.
+- Generate image, share, PDF.
