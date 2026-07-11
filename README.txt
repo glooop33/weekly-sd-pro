@@ -1,7 +1,8 @@
-Weekly SD Pro V2.0
-- New mobile dashboard.
-- Completion statistics and weekly progress.
-- Instant SD calculations inside Quick Update.
+Weekly SD Pro V3.0
+- Professional mobile dashboard.
+- Quick Update with search and instant calculations.
+- Custom report title and brand name.
+- Custom positive and negative colors.
+- Show/hide close and branding.
 - Daily / Weekly / Monthly independent.
-- Favorites, symbols management, backup, reports.
-- Generate image, share and PDF.
+- Backup, favorites, reports, image, share and PDF.
