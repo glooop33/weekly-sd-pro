@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<title>Weekly SD Pro</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root {
+  --bg:#07111f; --panel:#0d1b2b; --panel2:#10243a; --line:#213b57;
+  --text:#f8fbff; --muted:#9fb2c7; --blue:#4aa3ff; --green:#20d18a;
+  --green2:#91f0c9; --red:#ff6b7a; --red2:#ff9eaa; --gold:#ffd166;
+  --shadow:0 14px 35px rgba(0,0,0,.22);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:linear-gradient(180deg,#06101b,#0b1727 55%,#07111f);color:var(--text);font-family:Arial,Tahoma,sans-serif}
+body{padding-bottom:88px}
+button,input,select{font:inherit}
+.app{max-width:760px;margin:auto;padding:12px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 2px 10px}
+.header h1{margin:0;font-size:22px}
+.header p{margin:5px 0 0;font-size:12px;color:var(--muted)}
+.logo{width:48px;height:48px;border-radius:15px;background:linear-gradient(145deg,#103253,#1f5f98);display:grid;place-items:center;font-size:24px;box-shadow:var(--shadow)}
+.card{background:rgba(13,27,43,.98);border:1px solid var(--line);border-radius:20px;padding:14px;margin:10px 0;box-shadow:var(--shadow)}
+.card h2{font-size:16px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;color:#b8cadb;font-size:12px;margin:0 0 6px}
+input,select{width:100%;background:#081522;border:1px solid #2a4969;color:#fff;border-radius:14px;padding:13px;font-size:16px;outline:none}
+input:focus,select:focus{border-color:var(--blue)}
+.btn{border:0;border-radius:14px;padding:12px 14px;font-weight:800;cursor:pointer}
+.primary{background:linear-gradient(135deg,#2388ff,#35b7ff);color:white}
+.secondary{background:#16304d;color:#dceeff;border:1px solid #2d567a}
+.danger{background:#3a1720;color:#ffc3ca;border:1px solid #71303b}
+.gold{background:#3a300d;color:#ffe49a;border:1px solid #755d1d}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.period-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.period-tab{background:#0a1828;border:1px solid #284665;color:#adc1d4;padding:11px;border-radius:12px;font-weight:800}
+.period-tab.active{background:#193d61;color:white;border-color:#4d82ae}
+.symbol-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.symbol-name{font-size:22px;font-weight:900}
+.symbol-cat{font-size:12px;color:var(--muted);margin-top:3px}
+.star{font-size:28px;color:#52677c;cursor:pointer}
+.star.on{color:var(--gold)}
+.levels{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.level{background:var(--panel2);border-radius:13px;padding:11px;text-align:center}
+.level.center{grid-column:1/-1}
+.level small{display:block;color:#9fb2c7;font-size:11px;margin-bottom:4px}
+.level strong{font-size:16px}
+.pos{color:var(--green2)} .neg{color:var(--red2)}
+.nav{position:fixed;left:0;right:0;bottom:0;background:rgba(6,16,28,.97);backdrop-filter:blur(12px);border-top:1px solid #1d3955;padding:8px 10px calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(3,1fr);gap:8px;z-index:30}
+.nav button{background:#0b1929;border:1px solid #213d58;color:#9fb3c8;border-radius:14px;padding:11px 6px;font-weight:800}
+.nav button.active{background:#173655;color:white;border-color:#3c78aa}
+.view{display:none} .view.active{display:block}
+.list-item{background:#0a1727;border:1px solid #1e3b58;border-radius:15px;padding:12px;margin:9px 0}
+.list-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.search{margin-bottom:10px}
+.report{background:#07111f;border:1px solid #274562;border-radius:20px;overflow:hidden}
+.report-head{background:linear-gradient(135deg,#0b1b2e,#123452);padding:20px;text-align:center}
+.report-head h2{margin:0;font-size:21px}
+.section-title{padding:12px 14px;background:#0f2339;border-top:1px solid #24425e;border-bottom:1px solid #24425e;font-weight:900}
+.report-card{padding:12px 14px;border-bottom:1px solid #18324d}
+.report-symbol{font-size:18px;font-weight:900;margin-bottom:9px}
+.report-levels{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.report-level{background:#0f2136;border-radius:11px;padding:9px;text-align:center}
+.report-level.center{grid-column:1/-1}
+.report-level small{display:block;color:#9fb2c7;font-size:10px;margin-bottom:3px}
+.empty{text-align:center;color:#8da3b7;padding:24px}
+.note{font-size:12px;color:#90a6bb;line-height:1.7}
+.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:#10253b;border:1px solid #2c5376;color:#fff;padding:11px 16px;border-radius:12px;display:none;z-index:40}
+@media(max-width:520px) {
+  .app{padding:9px}
+  .grid{grid-template-columns:1fr}
+  .actions .btn{flex:1}
+  .header h1{font-size:20px}
+}
+@media print {
+  body{background:white;padding:0}
+  .header,.nav,.no-print,#inputView,#symbolsView{display:none!important}
+  .app{max-width:none;padding:0}
+  .view{display:block!important}
+  .card{border:0;box-shadow:none;padding:0;margin:0}
+  .report{border:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header">
+  <div><h1>Weekly SD Pro</h1><p>واجهة احترافية مخصصة للجوال</p></div>
+  <div class="logo">📈</div>
+</header>
+
+<section id="inputView" class="view active">
+  <div class="card">
+    <h2>اختيار الرمز</h2>
+    <div class="grid">
+      <div><label>الرمز</label><select id="symbolSelect"></select></div>
+      <div><label>الفئة</label><input id="categoryDisplay" disabled></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="period-tabs">
+      <button class="period-tab active" data-period="daily">يومي</button>
+      <button class="period-tab" data-period="weekly">أسبوعي</button>
+      <button class="period-tab" data-period="monthly">شهري</button>
+    </div>
+
+    <div class="symbol-row">
+      <div>
+        <div id="currentSymbol" class="symbol-name">—</div>
+        <div id="currentCategory" class="symbol-cat">—</div>
+      </div>
+      <div id="favoriteToggle" class="star">☆</div>
+    </div>
+
+    <div class="grid" style="margin-top:12px">
+      <div><label id="closeLabel">إغلاق يومي</label><input id="closeInput" type="number" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+      <div><label id="sdLabel">انحراف يومي ±1</label><input id="sdInput" type="number" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+    </div>
+
+    <div class="actions">
+      <button id="saveBtn" class="btn primary">حفظ</button>
+      <button id="nextBtn" class="btn secondary">التالي</button>
+    </div>
+
+    <div id="levelsPreview"></div>
+  </div>
+</section>
+
+<section id="symbolsView" class="view">
+  <div class="card">
+    <h2>إضافة رمز جديد</h2>
+    <div class="grid">
+      <div><label>الفئة</label><select id="newCategory"><option>مؤشر</option><option>صندوق</option><option>شركة</option></select></div>
+      <div><label>الرمز</label><input id="newSymbol" placeholder="مثال: META"></div>
+    </div>
+    <div class="actions"><button id="addSymbolBtn" class="btn primary">إضافة</button></div>
+  </div>
+
+  <div class="card">
+    <h2>إدارة الرموز</h2>
+    <input id="searchInput" class="search" placeholder="ابحث عن رمز">
+    <div id="symbolsList"></div>
+  </div>
+</section>
+
+<section id="reportView" class="view">
+  <div class="card">
+    <div class="grid no-print">
+      <div><label>نوع التقرير</label><select id="reportPeriod"><option value="daily">يومي</option><option value="weekly" selected>أسبوعي</option><option value="monthly">شهري</option></select></div>
+      <div><label>المحتوى</label><select id="reportScope"><option value="favorites">المفضلة</option><option value="all">جميع الرموز المكتملة</option></select></div>
+    </div>
+
+    <div class="actions no-print">
+      <button id="imageBtn" class="btn primary">إنشاء صورة</button>
+      <button id="shareBtn" class="btn secondary">مشاركة</button>
+      <button class="btn secondary" onclick="window.print()">PDF</button>
+    </div>
+
+    <div id="report" class="report">
+      <div class="report-head"><h2 id="reportTitle">Weekly Standard Deviation Levels</h2></div>
+      <div id="reportContent"></div>
+    </div>
+
+    <p class="note no-print">يتم إنشاء صورة مناسبة للنشر مباشرة من الجوال.</p>
+  </div>
+</section>
+</div>
+
+<nav class="nav">
+  <button class="active" data-view="inputView">الإدخال</button>
+  <button data-view="symbolsView">الرموز</button>
+  <button data-view="reportView">التقرير</button>
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const DEFAULT_ITEMS=[{"id": "1", "category": "مؤشر", "symbol": "SPX", "favorite": true, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "2", "category": "مؤشر", "symbol": "NDX", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "3", "category": "مؤشر", "symbol": "DJI", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "4", "category": "مؤشر", "symbol": "RUT", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "5", "category": "صندوق", "symbol": "SPY", "favorite": true, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "6", "category": "صندوق", "symbol": "QQQ", "favorite": true, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "7", "category": "صندوق", "symbol": "DIA", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "8", "category": "صندوق", "symbol": "IWM", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "9", "category": "شركة", "symbol": "NVDA", "favorite": true, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "10", "category": "شركة", "symbol": "AAPL", "favorite": true, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "11", "category": "شركة", "symbol": "MSFT", "favorite": true, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "12", "category": "شركة", "symbol": "AMZN", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "13", "category": "شركة", "symbol": "GOOGL", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "14", "category": "شركة", "symbol": "META", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "15", "category": "شركة", "symbol": "TSLA", "favorite": true, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "16", "category": "شركة", "symbol": "AVGO", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "17", "category": "شركة", "symbol": "AMD", "favorite": true, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "18", "category": "شركة", "symbol": "MU", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "19", "category": "شركة", "symbol": "NFLX", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "20", "category": "شركة", "symbol": "PLTR", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "21", "category": "شركة", "symbol": "ORCL", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "22", "category": "شركة", "symbol": "CRM", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "23", "category": "شركة", "symbol": "ADBE", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "24", "category": "شركة", "symbol": "COST", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "25", "category": "شركة", "symbol": "WMT", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "26", "category": "شركة", "symbol": "JPM", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "27", "category": "شركة", "symbol": "BAC", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "28", "category": "شركة", "symbol": "V", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "29", "category": "شركة", "symbol": "MA", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "30", "category": "شركة", "symbol": "BRK.B", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "31", "category": "شركة", "symbol": "LLY", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "32", "category": "شركة", "symbol": "UNH", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "33", "category": "شركة", "symbol": "XOM", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "34", "category": "شركة", "symbol": "CVX", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "35", "category": "شركة", "symbol": "HD", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "36", "category": "شركة", "symbol": "DIS", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "37", "category": "شركة", "symbol": "COIN", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}, {"id": "38", "category": "شركة", "symbol": "MSTR", "favorite": false, "dailyClose": "", "dailySd": "", "weeklyClose": "", "weeklySd": "", "monthlyClose": "", "monthlySd": ""}];
+const $=id=>document.getElementById(id);
+let items=JSON.parse(localStorage.getItem('weekly_sd_pro_v1')||'null')||DEFAULT_ITEMS;
+let currentId=items[0]?.id||null;
+let currentPeriod='daily';
+const order={'مؤشر':1,'صندوق':2,'شركة':3};
+const labels={
+  daily:['إغلاق يومي','انحراف يومي ±1','Daily'],
+  weekly:['إغلاق أسبوعي','انحراف أسبوعي ±1','Weekly'],
+  monthly:['إغلاق شهري','انحراف شهري ±1','Monthly']
+};
+
+function toast(t){const el=$('toast');el.textContent=t;el.style.display='block';setTimeout(()=>el.style.display='none',1600)}
+function saveAll(){localStorage.setItem('weekly_sd_pro_v1',JSON.stringify(items));renderAll()}
+function current(){return items.find(x=>x.id===currentId)}
+function num(v){return v===''||v===null||v===undefined?null:Number(v)}
+function calc(c,s){c=num(c);s=num(s);if(c===null||s===null||!Number.isFinite(c)||!Number.isFinite(s))return null;return {p1:c+s,p05:c+s/2,m05:c-s/2,m1:c-s}}
+function f(v){return Number(v).toFixed(2)}
+
+function renderSelect(){
+  $('symbolSelect').innerHTML=[...items].sort((a,b)=>order[a.category]-order[b.category]||a.symbol.localeCompare(b.symbol))
+    .map(x=>`<option value="${x.id}">${x.symbol} — ${x.category}</option>`).join('');
+  if(currentId)$('symbolSelect').value=currentId;
+  loadCurrent();
+}
+
+function loadCurrent(){
+  const x=current(); if(!x)return;
+  $('currentSymbol').textContent=x.symbol;
+  $('currentCategory').textContent=x.category;
+  $('categoryDisplay').value=x.category;
+  $('closeLabel').textContent=labels[currentPeriod][0];
+  $('sdLabel').textContent=labels[currentPeriod][1];
+  $('closeInput').value=x[currentPeriod+'Close'];
+  $('sdInput').value=x[currentPeriod+'Sd'];
+  $('favoriteToggle').textContent=x.favorite?'★':'☆';
+  $('favoriteToggle').className='star '+(x.favorite?'on':'');
+  renderPreview();
+}
+
+function renderPreview(){
+  const x=current(); if(!x)return;
+  const c=calc(x[currentPeriod+'Close'],x[currentPeriod+'Sd']);
+  $('levelsPreview').innerHTML=!c?'':`<div class="levels">
+    <div class="level"><small>SD +1</small><strong class="pos">${f(c.p1)}</strong></div>
+    <div class="level"><small>SD +0.5</small><strong class="pos">${f(c.p05)}</strong></div>
+    <div class="level center"><small>الإغلاق</small><strong>${f(x[currentPeriod+'Close'])}</strong></div>
+    <div class="level"><small>SD -0.5</small><strong class="neg">${f(c.m05)}</strong></div>
+    <div class="level"><small>SD -1</small><strong class="neg">${f(c.m1)}</strong></div>
+  </div>`;
+}
+
+function renderSymbols(){
+  const q=$('searchInput').value.trim().toUpperCase();
+  const arr=[...items].filter(x=>x.symbol.includes(q)).sort((a,b)=>order[a.category]-order[b.category]||a.symbol.localeCompare(b.symbol));
+  $('symbolsList').innerHTML=arr.map(x=>`<div class="list-item">
+    <div class="list-top">
+      <div>
+        <span class="star ${x.favorite?'on':''}" onclick="toggleFav('${x.id}')">${x.favorite?'★':'☆'}</span>
+        <span class="symbol-name">${x.symbol}</span>
+        <div class="symbol-cat">${x.category}</div>
+      </div>
+      <div>
+        <button class="btn secondary" onclick="editSymbol('${x.id}')">تعديل</button>
+        <button class="btn danger" onclick="removeSymbol('${x.id}')">حذف</button>
+      </div>
+    </div>
+  </div>`).join('')||'<div class="empty">لا توجد نتائج</div>';
+}
+
+function filteredReportItems(){
+  const p=$('reportPeriod').value,scope=$('reportScope').value;
+  return items.filter(x=>(scope==='all'||x.favorite)&&calc(x[p+'Close'],x[p+'Sd']));
+}
+
+function renderReport(){
+  const p=$('reportPeriod').value;
+  $('reportTitle').textContent=labels[p][2]+' Standard Deviation Levels';
+  const groups=[['مؤشر','📈 المؤشرات'],['صندوق','📊 الصناديق'],['شركة','🏢 الشركات']];
+  let html='';
+  for(const [cat,title] of groups){
+    const arr=filteredReportItems().filter(x=>x.category===cat).sort((a,b)=>a.symbol.localeCompare(b.symbol));
+    if(!arr.length)continue;
+    html+=`<div class="section-title">${title}</div>`;
+    for(const x of arr){
+      const c=calc(x[p+'Close'],x[p+'Sd']);
+      html+=`<div class="report-card">
+        <div class="report-symbol">${x.symbol}</div>
+        <div class="report-levels">
+          <div class="report-level"><small>SD +1</small><strong class="pos">${f(c.p1)}</strong></div>
+          <div class="report-level"><small>SD +0.5</small><strong class="pos">${f(c.p05)}</strong></div>
+          <div class="report-level center"><small>الإغلاق</small><strong>${f(x[p+'Close'])}</strong></div>
+          <div class="report-level"><small>SD -0.5</small><strong class="neg">${f(c.m05)}</strong></div>
+          <div class="report-level"><small>SD -1</small><strong class="neg">${f(c.m1)}</strong></div>
+        </div>
+      </div>`;
+    }
+  }
+  $('reportContent').innerHTML=html||'<div class="empty">لا توجد بيانات مكتملة</div>';
+}
+
+function renderAll(){renderSelect();renderSymbols();renderReport()}
+
+$('symbolSelect').onchange=e=>{currentId=e.target.value;loadCurrent()};
+document.querySelectorAll('.period-tab').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.period-tab').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');currentPeriod=b.dataset.period;loadCurrent();
+});
+$('closeInput').oninput=()=>{const x=current();x[currentPeriod+'Close']=$('closeInput').value;renderPreview()};
+$('sdInput').oninput=()=>{const x=current();x[currentPeriod+'Sd']=$('sdInput').value;renderPreview()};
+$('saveBtn').onclick=()=>{saveAll();toast('تم الحفظ')};
+$('nextBtn').onclick=()=>{
+  const sorted=[...items].sort((a,b)=>order[a.category]-order[b.category]||a.symbol.localeCompare(b.symbol));
+  const i=sorted.findIndex(x=>x.id===currentId);currentId=sorted[(i+1)%sorted.length].id;renderSelect();
+};
+$('favoriteToggle').onclick=()=>{const x=current();x.favorite=!x.favorite;saveAll();toast('تم تحديث المفضلة')};
+$('addSymbolBtn').onclick=()=>{
+  const s=$('newSymbol').value.trim().toUpperCase();
+  if(!s)return toast('اكتب الرمز');
+  if(items.some(x=>x.symbol===s))return toast('الرمز موجود');
+  items.push({id:Date.now().toString(),category:$('newCategory').value,symbol:s,favorite:false,dailyClose:'',dailySd:'',weeklyClose:'',weeklySd:'',monthlyClose:'',monthlySd:''});
+  $('newSymbol').value='';saveAll();toast('تمت الإضافة');
+};
+$('searchInput').oninput=renderSymbols;
+window.toggleFav=id=>{const x=items.find(i=>i.id===id);x.favorite=!x.favorite;saveAll()};
+window.editSymbol=id=>{currentId=id;renderSelect();switchView('inputView')};
+window.removeSymbol=id=>{if(confirm('حذف الرمز؟')){items=items.filter(x=>x.id!==id);if(currentId===id)currentId=items[0]?.id||null;saveAll()}};
+$('reportPeriod').onchange=renderReport;
+$('reportScope').onchange=renderReport;
+
+function switchView(id){
+  document.querySelectorAll('.view,.nav button').forEach(x=>x.classList.remove('active'));
+  $(id).classList.add('active');
+  document.querySelector(`.nav button[data-view="${id}"]`).classList.add('active');
+  if(id==='reportView')renderReport();
+}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>switchView(b.dataset.view));
+
+$('shareBtn').onclick=async()=>{
+  const p=$('reportPeriod').value;
+  let text=labels[p][2]+' Standard Deviation Levels\n\n';
+  for(const x of filteredReportItems()){
+    const c=calc(x[p+'Close'],x[p+'Sd']);
+    text+=`${x.symbol} | +1 ${f(c.p1)} | +0.5 ${f(c.p05)} | Close ${f(x[p+'Close'])} | -0.5 ${f(c.m05)} | -1 ${f(c.m1)}\n`;
+  }
+  if(navigator.share){try{await navigator.share({title:'SD Levels',text})}catch(e){}}
+  else{await navigator.clipboard.writeText(text);toast('تم النسخ')}
+};
+
+$('imageBtn').onclick=()=>{
+  const p=$('reportPeriod').value;
+  const data=filteredReportItems();
+  if(!data.length)return toast('لا توجد بيانات مكتملة');
+  const canvas=document.createElement('canvas');
+  canvas.width=1080;canvas.height=1080;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#07111f';ctx.fillRect(0,0,1080,1080);
+  const g=ctx.createLinearGradient(0,0,1080,0);g.addColorStop(0,'#0b1b2e');g.addColorStop(1,'#123452');
+  ctx.fillStyle=g;ctx.fillRect(0,0,1080,150);
+  ctx.fillStyle='#fff';ctx.font='bold 42px Arial';ctx.textAlign='center';
+  ctx.fillText(labels[p][2]+' Standard Deviation Levels',540,90);
+  let y=195;
+  const groups=[['مؤشر','INDICES'],['صندوق','ETFs'],['شركة','STOCKS']];
+  for(const [cat,title] of groups){
+    const arr=data.filter(x=>x.category===cat).sort((a,b)=>a.symbol.localeCompare(b.symbol));
+    if(!arr.length)continue;
+    ctx.fillStyle='#0f2339';ctx.fillRect(40,y-34,1000,48);
+    ctx.fillStyle='#fff';ctx.font='bold 26px Arial';ctx.textAlign='left';ctx.fillText(title,62,y);
+    y+=55;
+    for(const x of arr){
+      if(y>1005)break;
+      const c=calc(x[p+'Close'],x[p+'Sd']);
+      ctx.fillStyle='#0d1b2b';ctx.fillRect(40,y-20,1000,58);
+      ctx.fillStyle='#fff';ctx.font='bold 24px Arial';ctx.textAlign='left';ctx.fillText(x.symbol,62,y+16);
+      const vals=[['+1',c.p1,'#91f0c9'],['+0.5',c.p05,'#91f0c9'],['Close',x[p+'Close'],'#fff'],['-0.5',c.m05,'#ff9eaa'],['-1',c.m1,'#ff9eaa']];
+      let x0=260;
+      for(const [lab,v,col] of vals){
+        ctx.textAlign='center';ctx.fillStyle='#9fb2c7';ctx.font='16px Arial';ctx.fillText(lab,x0,y-2);
+        ctx.fillStyle=col;ctx.font='bold 20px Arial';ctx.fillText(f(v),x0,y+20);
+        x0+=160;
+      }
+      y+=66;
+    }
+  }
+  ctx.fillStyle='#8fa5ba';ctx.font='18px Arial';ctx.textAlign='center';ctx.fillText('Weekly SD Pro',540,1050);
+  canvas.toBlob(blob=>{
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='SD_Levels.png';a.click();URL.revokeObjectURL(a.href);
+  },'image/png');
+};
+
+renderAll();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+</script>
+</body>
+</html>
